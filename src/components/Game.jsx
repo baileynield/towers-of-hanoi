@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import { DndContext } from "@dnd-kit/core";
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import { discs } from "./discs";
 import Tower from "./Tower";
@@ -15,6 +17,17 @@ export default function Game() {
     t3: [],
   });
 
+  const yellAtUser = () => toast.error("YOU FOOL! YOU SHOULD KNOW BETTER", {
+    position: "top-right",
+    autoClose: 5000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: false,
+    draggable: true,
+    progress: undefined,
+    theme: "dark",
+    });
+
   function handleDragEnd({ active, over }) {
     setParent(over ? over.id : null);
 
@@ -27,9 +40,28 @@ export default function Game() {
     // Get the disc
     const disc = discs.find((disc) => disc.id === active.id);
 
-    if (over.id === "t1") newT1.push(disc);
-    else if (over.id === "t2") newT2.push(disc);
-    else if (over.id === "t3") newT3.push(disc);
+    // Get discs from target tower (the "over: tower")
+    const targetDiscs = towerState[over.id];
+    if (targetDiscs.length > 0) {
+      // Get last disc in target tower
+      const lastDisc = targetDiscs[targetDiscs.length - 1];
+
+      //Check if the current disc we got above has a larger ID than
+      // the last disc in the target tower. If it's larger, deny the
+      // move, put the disc back where it came from, then yell at the user
+      // for doing such a terrible thing.
+
+      if (disc.id > lastDisc.id) {
+        // deny the move
+        console.log("bad move");
+        yellAtUser()
+        return;
+      }
+    }
+
+    if (over.id === "t1") newT1.unshift(disc);
+    else if (over.id === "t2") newT2.unshift(disc);
+    else if (over.id === "t3") newT3.unshift(disc);
 
     setTowerState({
       t1: newT1,
