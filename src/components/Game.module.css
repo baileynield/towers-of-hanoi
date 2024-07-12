@@ -3,6 +3,8 @@
     grid-template-columns: repeat(3, 1fr);
     grid-column-gap: 10px;
     justify-items: center;
-    height: 200px;
+    height: 100%;
+    min-height: 95%;
     width: 800px;
+    flex-shrink: 0;
   }

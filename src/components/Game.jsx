@@ -8,14 +8,25 @@ import Tower from "./Tower";
 import styles from "./Game.module.css";
 
 export default function Game() {
-  const [, setParent] = useState(null);
+  const [parent , setParent] = useState(null);
   const [moves, setMoves] = useState(0);
-
+  // const [towerState, setTowerState] = useState({
+  //   t1: [...discs],
+  //   t2: [],
+  //   t3: [],
+  // });
+  // test
   const [towerState, setTowerState] = useState({
-    t1: [...discs],
+    t1: [discs[0]],
     t2: [],
-    t3: [],
+    t3: [discs[1], discs[2], discs[3], discs[4], discs[5]],
   });
+
+useEffect(() => {
+  if (towerState.t3.length === discs.length) {
+    alert(`You win! Yay! It only took you ${moves} moves.`)
+  }
+}, [towerState]);
 
   const yellAtUser = () => toast.error("YOU FOOL! YOU SHOULD KNOW BETTER", {
     position: "top-right",
@@ -63,12 +74,23 @@ export default function Game() {
     else if (over.id === "t2") newT2.unshift(disc);
     else if (over.id === "t3") newT3.unshift(disc);
 
+    // Check for the win condition, which is if the discs 
+    // are all on the right tower
+
+    setMoves(prev => prev + 1);
+
     setTowerState({
       t1: newT1,
       t2: newT2,
       t3: newT3,
     });
+
+
   }
+  // Add way to win game (know when game is finished)
+  // const finishedGame = !(setTowerState.t3 === discs)
+  //   console.log("You win!");
+
   return (
     <main className={styles.game}>
       <DndContext onDragEnd={handleDragEnd}>
