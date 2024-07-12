@@ -10,17 +10,17 @@ import styles from "./Game.module.css";
 export default function Game() {
   const [parent , setParent] = useState(null);
   const [moves, setMoves] = useState(0);
-  // const [towerState, setTowerState] = useState({
-  //   t1: [...discs],
-  //   t2: [],
-  //   t3: [],
-  // });
-  // test
   const [towerState, setTowerState] = useState({
-    t1: [discs[0]],
+    t1: [...discs],
     t2: [],
-    t3: [discs[1], discs[2], discs[3], discs[4], discs[5]],
+    t3: [],
   });
+  // test
+  // const [towerState, setTowerState] = useState({
+  //   t1: [discs[0]],
+  //   t2: [],
+  //   t3: [discs[1], discs[2], discs[3], discs[4], discs[5]],
+  // });
 
 useEffect(() => {
   if (towerState.t3.length === discs.length) {
